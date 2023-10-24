@@ -1,11 +1,12 @@
 ﻿namespace Counter.Views;
 using System.Collections.ObjectModel;
+using System.Diagnostics.Metrics;
 using Counter.Models;
 
 public partial class MainCounterPage : ContentPage
 {
-    public AddCounter CounterManager { get; set; } = new AddCounter();
-    public string CounterColorString { get; set; } = "Black";
+    public CounterMananger CounterManager { get; set; } = new CounterMananger();
+    public string CounterColorString { get; set; } = "";
 
     public MainCounterPage()
     {
@@ -15,63 +16,50 @@ public partial class MainCounterPage : ContentPage
 
     void Button_Clicked(System.Object sender, System.EventArgs e)
     {
-        bool err = false;
+        bool formValidation = FormCheck.checkForm(Editor_entryValue, Editor_counterTitle, CounterColorString, ColorPicker);
 
-        if(Editor_entryValue.Text == "")
+        if (formValidation == true)
         {
-            CounterManager.addCounter(0, CounterColorString);
-        }
-        else
-        {
-            if (int.TryParse(Editor_entryValue.Text, out int value))
-            {
-                CounterManager.addCounter(value, CounterColorString);
-            }
+            if (int.TryParse(Editor_entryValue.Text, out int countValue))
+                CounterManager.addCounter(countValue, CounterColorString, Editor_counterTitle.Text);
             else
-                err = true;
-        }
-        Models.FormCheck.checkForm(err, Editor_entryValue);
-       
-    }
+                CounterManager.addCounter(0, CounterColorString, Editor_counterTitle.Text);
 
-    void Button_ChangeCount(System.Object sender, System.EventArgs e)
-    {
-
-
-        if (sender is Button button )
-        {
-            string operation = button.Text;
-            CounterManager.ChangeCount(button, operation);
+            FormCheck.clearForm(Editor_entryValue, Editor_counterTitle, addCounterForm, ColorPicker);
+            CounterColorString = "";
         }
     }
 
     void ColorPicker_HandlerChanged(object sender, EventArgs e)
     {
-        var picker = (Picker)sender;
-        int selectedIndex = picker.SelectedIndex;
+        string selectedValue = (string)ColorPicker.SelectedItem;
 
-        if (selectedIndex != -1)
+        if (selectedValue != null)
         {
-            string selectedValue = picker.Items[selectedIndex];
             CounterColorString = selectedValue;
-
         }
     }
 
     void DeleteButtonClicked(System.Object sender, System.EventArgs e)
     {
-        if(sender is Button button)
-        {
-            CounterManager.deleteCount(button);
-        }
+        Button button = (Button)sender;
+        CounterManager.deleteCount(button);
     }
 
-    void ButtonResetClicked(System.Object sender, System.EventArgs e)
+    void ShowFilters_Clicked(System.Object sender, System.EventArgs e)
     {
-        if (sender is Button button)
+        addCounterForm.IsVisible = !addCounterForm.IsVisible;
+    }
+
+    async void ListView_ItemSelected(System.Object sender, Microsoft.Maui.Controls.SelectedItemChangedEventArgs e)
+    {
+        if (e.SelectedItem != null)
         {
-            CounterManager.resetCounter(button);
+            var selectedCounter = (Counter)e.SelectedItem; 
+            await Navigation.PushAsync(new NewPage1(selectedCounter));                                                                                     
         }
+        CountersListView.SelectedItem = null;
+
     }
 }
 

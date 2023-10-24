@@ -39,3 +39,9 @@ build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = Counter.Views.MainCounterPage.xaml
 build_metadata.AdditionalFiles.TargetPath = Views/MainCounterPage.xaml
 build_metadata.AdditionalFiles.RelativePath = Views/MainCounterPage.xaml
+
+[/Users/jakub/Projects/Counter/Counter/Views/NewPage1.xaml]
+build_metadata.AdditionalFiles.GenKind = Xaml
+build_metadata.AdditionalFiles.ManifestResourceName = Counter.Views.NewPage1.xaml
+build_metadata.AdditionalFiles.TargetPath = Views/NewPage1.xaml
+build_metadata.AdditionalFiles.RelativePath = Views/NewPage1.xaml

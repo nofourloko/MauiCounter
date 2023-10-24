@@ -3,108 +3,117 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Counter.Views.MainCounterPage"
              Title="Counter Jakub Miśta">
+    <ContentPage.Resources>
+        <Style x:Key="EditorWithPlaceholderStyle" TargetType="Editor">
+            <Setter Property="PlaceholderColor" Value="White" />
+            <Setter Property="FontSize" Value="20" />
+            <Setter Property="HorizontalTextAlignment" Value="Center" />
+        </Style>
+    </ContentPage.Resources>
 
-    <StackLayout Orientation="Vertical" Spacing="10">
-        <ListView ItemsSource="{Binding CounterManager.Counters}"  HasUnevenRows="True">
+    <StackLayout Orientation="Vertical" Spacing="10" >
+        <ListView x:Name="CountersListView"
+                  ItemsSource="{Binding CounterManager.Counters}"
+                  HasUnevenRows="True"
+                  ItemSelected="ListView_ItemSelected">
+          
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <Grid ColumnDefinitions="*,50,300,50,*" RowDefinitions="20,50" BackgroundColor="{Binding CounterColor}">
-
-
+                        <Grid ColumnDefinitions="*,50,300,50,*"
+                              RowDefinitions="1,30,50,1"
+                              BackgroundColor="{Binding CounterColor }" 
+                              RowSpacing="10"
+                              Padding="20">
+                                 
                             <Label Text="{Binding Title}"
-                                   x:Name="JakisName"
+                                   FontSize="30"
                                    HorizontalTextAlignment="Center"
                                    FontAttributes="Bold"
                                    Grid.Column="2"
-                                   Grid.Row="0"/>
+                                   Grid.Row="1"/>
                            
-                            <Button
-                                Grid.Column="0"
-                                Grid.Row="0"
-                                Text="X"
-                                BackgroundColor="{Binding CounterColor}"
-                                TextColor="Aqua"
-                                WidthRequest="10"
-                                HeightRequest="10"
-                                HorizontalOptions="Start"
-                                VerticalOptions="Center"
-                                Clicked="DeleteButtonClicked"
-                            />
+                            <Button Grid.Column="0"
+                                    Grid.Row="1"
+                                    Text="X"
+                                    BackgroundColor="{Binding CounterColor }"
+                                    TextColor="White"
+                                    WidthRequest="10"
+                                    HeightRequest="10"
+                                    HorizontalOptions="Start"
+                                    VerticalOptions="Center"
+                                    Clicked="DeleteButtonClicked"/>           
+
                             <Label Text="{Binding Count}"
                                    FontAttributes="Italic"
                                    HorizontalTextAlignment="Center"
                                    VerticalOptions="Center"
+                                   FontSize="20"
                                    Grid.Column="2"
-                                   Grid.Row="1"
-                                   />
-
-                            <Button
-                                Grid.Column="1"
-                                Grid.Row="1"
-                                Text="+"
-                                Clicked="Button_ChangeCount" />
-
-                            <Button
-                                Grid.Row="1"
-                                Grid.Column="3"
-                                Text="-"
-                                Clicked="Button_ChangeCount"/>
-
-                            <Button
-                                Grid.Row="0"
-                                Grid.Column="4"
-                                Text="Reset"
-                                BackgroundColor="{Binding CounterColor}"
-                                TextColor="Aqua"
-                                HorizontalOptions="End"
-                                VerticalOptions="Center"
-                                Clicked="ButtonResetClicked"
-
-                            />
+                                   Grid.Row="2"/>
                         </Grid>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <Grid ColumnDefinitions="*" RowDefinitions="*,*" RowSpacing="5">
-            <Label
-                VerticalTextAlignment="Center"
-                BackgroundColor="White"
-                TextColor="Black"
-                HorizontalTextAlignment="Center"
-                FontSize="25"
-                Grid.Row="0"
-                Text="Dodaj nowy licznik"/>
+
+         <Button BackgroundColor="Black"
+                 TextColor="White"
+                 FontSize="25"
+                 Text="Dodaj nowy licznik"
+                 Clicked="ShowFilters_Clicked"/>
+
+        <Grid x:Name="addCounterForm"
+              RowDefinitions="*,*"
+              ColumnDefinitions="*,*"
+              RowSpacing="5"
+              IsVisible="false">
+
+            <Editor
+                Grid.Column="0"
+                TextColor="White"
+                Text=""
+                x:Name="Editor_counterTitle"
+                FontSize="15"
+                PlaceholderColor="White"
+                Placeholder="Proszę podać nazwę countera"/>
+           
             <Picker
-                Grid.Row="1"
+                Grid.Column="1"
                 x:Name="ColorPicker"
                 Title="Wybierz swój kolor"
-                HorizontalTextAlignment="Center"
+                HorizontalTextAlignment="Start"
+                FontSize="15"
                 SelectedIndexChanged="ColorPicker_HandlerChanged">
  
                 <Picker.Items>
                     <x:String>Blue</x:String>
-                    <x:String>Red</x:String>
-                    <x:String>White</x:String>
                     <x:String>Orange</x:String>
+                    <x:String>Black</x:String>
+                    <x:String>Red</x:String>
+                    <x:String>Green</x:String>
+                    <x:String>Violet</x:String>
                 </Picker.Items>
+
             </Picker>
 
+             <Editor Grid.Column="0"
+                     Grid.Row="1"
+                     Text=""
+                     FontSize="15"
+                     x:Name="Editor_entryValue"
+                     PlaceholderColor="White"
+                     HorizontalTextAlignment="Start"
+                     Placeholder="Proszę podać liczbową wartosc początkową (Bazowo : 0)"/>
+
+              <Button BackgroundColor="White"
+                      TextColor="Black"
+                      Grid.Column="1"
+                      Grid.Row="1"
+                      Text="ADD"
+                      Clicked="Button_Clicked"/>
         </Grid>
-        <Grid ColumnDefinitions="*,*">
-            <Editor
-                Grid.Column="0"
-                Text=""
-                x:Name="Editor_entryValue"
-                Placeholder="Proszę podać liczbową wartosc początkową (Bazowo : 0)"
-            />
-            <Button
-                Grid.Column="1"
-                Text="ADD"
-                Clicked="Button_Clicked"
-            />
-        </Grid>
+        
         
     </StackLayout>
 </ContentPage>

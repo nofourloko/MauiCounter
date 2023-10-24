@@ -21,8 +21,6 @@ namespace Counter.Models
             }
         }
 
-        // Other properties and methods in Counter class
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         private void NotifyPropertyChanged(string propertyName)
